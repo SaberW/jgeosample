@@ -31,7 +31,7 @@ public class Dijkstra {
 
     public static void main(String[] args) {
         String shpPath  = "F:/MapWorkspace/shp/demo_path/demo_path.shp";
-        DataStore dataStore = getDataStore(shpPath);
+        DataStore dataStore = ShpUtil.getDataStore(shpPath);
         if (dataStore != null) {
             shortest(dataStore);
         }else {
@@ -39,23 +39,7 @@ public class Dijkstra {
         }
     }
 
-    /**
-     *
-     * @param shpPath
-     * @return
-     */
-    private static DataStore getDataStore(String shpPath) {
-        try{
-            File file = new File(shpPath);
-            Map map = new HashMap();
-            map.put( "url", file.toURL() );
-            DataStore dataStore = DataStoreFinder.getDataStore(map);
-            return dataStore;
-        }catch (Exception e) {
-            return null;
-        }
 
-    }
 
     /**
      *
@@ -67,7 +51,7 @@ public class Dijkstra {
             SimpleFeatureSource source = dataStore.getFeatureSource(dataStore.getTypeNames()[0]);
             SimpleFeatureCollection featureCollection = source.getFeatures();
 
-            Graph graph = buildGraph(featureCollection);
+            Graph graph = ShpUtil.buildGraph(featureCollection);
             if (graph == null) return;
 
             DijkstraIterator.EdgeWeighter edgeWeighter = new DijkstraIterator.EdgeWeighter() {
@@ -125,28 +109,5 @@ public class Dijkstra {
 
     }
 
-    /**
-     *
-     * @param simpleFeatureCollection
-     * @return
-     */
-    private static Graph buildGraph(SimpleFeatureCollection simpleFeatureCollection) {
-        LineStringGraphGenerator lineStringGraphGenerator = new LineStringGraphGenerator();
-        FeatureGraphGenerator graphGenerator = new FeatureGraphGenerator(lineStringGraphGenerator);
-        FeatureIterator iterator = simpleFeatureCollection.features();
-        try{
-            while (iterator.hasNext()) {
-                Feature feature = iterator.next();
-                graphGenerator.add(feature);
-            }
 
-            Graph graph = graphGenerator.getGraph();
-            return graph;
-        }catch (Exception e) {
-            e.printStackTrace();
-        }finally {
-            iterator.close();
-        }
-        return null;
-    }
 }

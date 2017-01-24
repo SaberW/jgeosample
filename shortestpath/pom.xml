@@ -47,6 +47,12 @@
             <version>${gt.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-shapefile</artifactId>
+            <version>${gt.version}</version>
+        </dependency>
+
         <!-- 支持通过EPSG编号创建CRS -->
         <dependency>
             <groupId>org.geotools</groupId>

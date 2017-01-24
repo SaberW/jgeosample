@@ -1,12 +1,14 @@
 package org.potmart.jgeo.sample.shortestpath;
 
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.Point;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.graph.build.GraphBuilder;
+import org.geotools.graph.build.feature.FeatureGraphGenerator;
 import org.geotools.graph.build.line.LineStringGraphGenerator;
 import org.geotools.graph.path.DijkstraShortestPathFinder;
 import org.geotools.graph.path.Path;
@@ -28,10 +30,12 @@ import java.util.*;
 public class Dijkstra {
 
     public static void main(String[] args) {
-        String shpPath  = "";
+        String shpPath  = "F:/MapWorkspace/shp/demo_path/demo_path.shp";
         DataStore dataStore = getDataStore(shpPath);
         if (dataStore != null) {
-
+            shortest(dataStore);
+        }else {
+            System.out.println("data store is null");
         }
     }
 
@@ -81,12 +85,22 @@ public class Dijkstra {
             int i=0;
             while (nodeIterator.hasNext()) {
                 Node iNode = (Node) nodeIterator.next();
-                if (i == 0) {
+                Point point = (Point)iNode.getObject();
+
+                if (iNode.getID() == 6) start = iNode;
+
+                if (iNode.getID() == 13) destination = iNode;
+
+                /*
+
+                if (point.getX() == 0 && point.getY() == 0) {
                     start = iNode;
                 }
-                if (i == 5) {
+                if (point.getX() == 0 && point.getY() == 0) {
                     destination = iNode;
                 }
+                */
+
                 i++;
             }
 
@@ -95,7 +109,13 @@ public class Dijkstra {
                 pathFinder.calculate();
 
                 Path path = pathFinder.getPath(destination);
-                System.out.println(path.toString());
+                double cost = pathFinder.getCost(destination);
+                if (path != null) {
+                    System.out.println(path.toString());
+
+                }
+                System.out.println(cost);
+
             }
 
 
@@ -111,7 +131,8 @@ public class Dijkstra {
      * @return
      */
     private static Graph buildGraph(SimpleFeatureCollection simpleFeatureCollection) {
-        LineStringGraphGenerator graphGenerator = new LineStringGraphGenerator();
+        LineStringGraphGenerator lineStringGraphGenerator = new LineStringGraphGenerator();
+        FeatureGraphGenerator graphGenerator = new FeatureGraphGenerator(lineStringGraphGenerator);
         FeatureIterator iterator = simpleFeatureCollection.features();
         try{
             while (iterator.hasNext()) {

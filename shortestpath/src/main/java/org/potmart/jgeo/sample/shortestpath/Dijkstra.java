@@ -39,8 +39,6 @@ public class Dijkstra {
         }
     }
 
-
-
     /**
      *
      * @param dataStore
@@ -71,9 +69,9 @@ public class Dijkstra {
                 Node iNode = (Node) nodeIterator.next();
                 Point point = (Point)iNode.getObject();
 
-                if (iNode.getID() == 6) start = iNode;
+                if (iNode.getID() == 0) start = iNode;
 
-                if (iNode.getID() == 13) destination = iNode;
+                if (iNode.getID() == 1) destination = iNode;
 
                 /*
 

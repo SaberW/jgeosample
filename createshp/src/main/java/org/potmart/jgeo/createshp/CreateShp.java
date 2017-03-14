@@ -74,17 +74,26 @@ public class CreateShp {
             double[] bound4326 = {-180, -90, 90, 180};
 
             //设置Writer
-            String[] trees = {"杉树-乔木", "梨树-果树", "樟树-乔木", "杨树-乔木", "连翘-灌木"};
+            String[] trees = {"水杉-乔木", "白桦-乔木", "香樟-乔木", "油松-乔木", "其他-灌木"};
             FeatureWriter<SimpleFeatureType, SimpleFeature> writer = ds.getFeatureWriter(ds.getTypeNames()[0], Transaction.AUTO_COMMIT.AUTO_COMMIT);
             //写下一条
-            long max = 9999;
+            long max = 1000000;
             for (long i=0; i < max; i++) {
                 SimpleFeature feature = writer.next();
                 double x = 0;
                 double y = 0;
                 if (crsCode.equals("EPSG:4326")){
+                    //region world wide
+                    /*
                     x = -180 + Math.random() * 360;
                     y = -80 + Math.random() * 160;
+                    */
+                    //endregion
+
+                    //region  china x 73 - 135  y 17 - 54
+                    x = 73 + Math.random() * 62;
+                    y = 17 + Math.random() * 37;
+                    //endregion
                 }else {
                     x = -20037508.34 + Math.random()*400000000;
                     y = -20037508.34 + Math.random()*400000000;

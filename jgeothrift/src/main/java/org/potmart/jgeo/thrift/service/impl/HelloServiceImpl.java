@@ -8,6 +8,6 @@ import org.potmart.jgeo.thrift.service.Hello;
  */
 public class HelloServiceImpl implements Hello.Iface {
     public String helloString(String para) throws TException {
-        return para;
+        return "hello service : " + para;
     }
 }

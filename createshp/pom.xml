@@ -112,6 +112,13 @@
             <version>${gt.ver}</version>
         </dependency>
 
+
+        <dependency>
+            <groupId>org.geotools.jdbc</groupId>
+            <artifactId>gt-jdbc-h2</artifactId>
+            <version>${gt.ver}</version>
+        </dependency>
+
     </dependencies>
 
     <build>

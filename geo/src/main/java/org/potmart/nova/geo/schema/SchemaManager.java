@@ -9,7 +9,9 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * manage schema in DataStore
@@ -64,7 +66,7 @@ public class SchemaManager {
 
     /**
      * fetch schema from SchemaManager
-     * @param schemaName
+     * @param schemaName schema name
      * @return
      */
     public SimpleFeatureType fetchSchema(String schemaName) {
@@ -86,6 +88,66 @@ public class SchemaManager {
         }
 
         return null;
+
+    }
+
+    /**
+     *
+     * @param schema schema
+     */
+    public void addSchema(SimpleFeatureType schema) {
+        if (schema == null) {
+            return;
+        }
+
+        if (schema.getTypeName() == null) {
+            return;
+        }
+
+        if (!dataStoreExist()) {
+            return;
+        }
+
+        try{
+            dataStore.createSchema(schema);
+
+            StringBuffer sb = new StringBuffer();
+            String sep = ",";
+            for (int i=0; i < schemaNames.length; i++) {
+                sb.append(schemaNames[i])
+                        .append(sep);
+            }
+            sb.append(schema.getTypeName());
+
+            schemaNames = sb.toString().split(sep);
+
+        }catch (IOException e) {
+
+        }
+
+    }
+
+    /**
+     *
+     * @param schemaName
+     */
+    public void removeSchema(String schemaName) {
+        if (!schemaNameExist(schemaName)) {
+            return;
+        }
+
+        try{
+            dataStore.removeSchema(schemaName);
+
+            List<String> nameList = Arrays.asList(schemaNames).stream()
+                    .filter(name -> !name.equals(schemaName))
+                    .collect(Collectors.toList());
+            schemaNames = nameList.toArray(new String[nameList.size()]);
+
+        }catch (IOException e) {
+
+        }
+
 
     }
 

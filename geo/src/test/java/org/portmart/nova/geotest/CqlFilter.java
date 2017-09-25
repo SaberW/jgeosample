@@ -9,13 +9,17 @@ import org.geotools.factory.FactoryFinder;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.geojson.feature.FeatureJSON;
+import org.omg.SendingContext.RunTime;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.potmart.nova.geo.datastore.DataStoreManager;
 
 import java.io.IOException;
+import java.lang.instrument.Instrumentation;
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.lang.System.out;
 
 /**
  * Created by GOT.hodor on 2017/9/25.
@@ -41,14 +45,28 @@ public class CqlFilter {
                 //query.setCoordinateSystem(Params.crsByEpsgCode("EPSG:4326", true));
                 //query.setCoordinateSystemReproject(Params.crsByEpsgCode("EPSG:3857", true));
                 query.setFilter(buildCameraFilter());
+
                 SimpleFeatureCollection mypolyCollection = mypolySource.getFeatures(query);
 
-                System.out.println("camera:\r\n" + featureJSON.toString(mypolyCollection));
+                printInstrumentationSize(mypolyCollection);
+
+                out.println("camera:\r\n" + featureJSON.toString(mypolyCollection));
             }catch (IOException e){
                 e.printStackTrace();
             }
         }
 
+    }
+
+    /**
+     *
+     * @param object
+     */
+    public static void printInstrumentationSize(final Object object)
+    {
+        out.println(
+                "Object of type '" + object.getClass() + "' has size of "
+                        + InstrumentationAgent.getObjectSize(object) + " bytes.");
     }
 
 

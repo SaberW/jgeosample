@@ -6,7 +6,6 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>newtransform</module>
-        <module>oldtransform</module>
         <module>shortestpath</module>
         <module>createshp</module>
     </modules>
@@ -19,7 +18,6 @@
             <id>jgeosample</id>
             <modules>
                 <module>newtransform</module>
-                <module>oldtransform</module>
                 <module>shortestpath</module>
                 <module>createshp</module>
             </modules>

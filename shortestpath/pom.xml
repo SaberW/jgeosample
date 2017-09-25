@@ -11,7 +11,7 @@
     <!-- 最短路径 -->
 
     <properties>
-        <gt.version>15.3</gt.version>
+        <gt.version>18-beta</gt.version>
     </properties>
 
 
